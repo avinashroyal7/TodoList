@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+
+    <title>TODO List</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">TODOs List</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                    <button class="btn btn-outline-success" type="submit">
+                        Search
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+   <!-- here above we hv take nav bar -->
+
+    <div class="container my-4" >
+        <h2 class="text-center">TODOs List</h2>
+        <!-- here we wrote text-center to place all in middle , it there in bootstrap -->
+        
+            <div class="form-group">
+              <label for="title">title</label>
+              <input type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Enter text">
+              <small id="title" class="form-text text-muted">We'll never share List with anyone.</small>
+            </div>
+
+            <div class="form-floating">
+                <label for="description">Description</label>
+                <textarea class="form-control" placeholder="Leave a comment here" id="description" style="height: 100px"></textarea>
+              </div>
+          
+            <button  id="Add" class="btn btn-primary my-4">Add to List</button>
+            <button  type="submit" id="clear" class="btn btn-primary my-4" onclick='cleared()'>clear list</button>
+              <!-- below we hv table template from bootstrap -->
+            <div id="items" class="my-4">
+                <h2>Your Items</h2>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">SNo</th>
+                        <th scope="col">Item title</th>
+                        <th scope="col">Item description</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tablebody">
+                        <!-- above for body we hv given id bcs we are trying to populate data in tbody only  -->
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>get some sleep</td>
+                        <td>you need it</td>
+                        <td><button class="btn btn-sm btn-primary">Delete</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+         
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+        <script>
+            function getAndUpdate(){
+                console.log("updating list....")
+                tit=document.getElementById('title').value;//here we r getting values we r entering
+                des=document.getElementById('description').value;
+                
+                
+                if(localStorage.getItem('itemsJson')==null){//we r not using server ,doingin localstorage, so we r checking if its there, not means we r creating array&then
+                    //pushing the values we enterred, as this will be in json we are converting it to string &setting it to main local storage
+                    Array1=[]
+                    Array1.push([tit,des])
+                    localStorage.setItem('itemsJson',JSON.stringify(Array1));
+                }
+
+                else{
+                    Array1str=localStorage.getItem('itemsJson');//if not null, we r getting elements
+                    Array1=JSON.parse(Array1str);//parsing it to json
+                    Array1.push([tit,des])//adding values we entered
+                    localStorage.setItem('itemsJson',JSON.stringify(Array1));//then converting to string
+                }
+
+                update()//then updatingthe after executions
+                }
+            function update(){
+                
+                if(localStorage.getItem('itemsJson')==null){
+                    Array1=[]//we r checking iitemjson there or not , not means we create array
+                    localStorage.setItem('itemsJson',JSON.stringify(Array1));//if there we r converting to string to populate in table
+                }
+
+                else{
+                    Array1str=localStorage.getItem('itemsJson');//if there already we getting elements
+                    Array1=JSON.parse(Array1str);//parsing into json
+                }
+
+                let tablebody=document.getElementById('tablebody')//we getting tablebody by id 
+                let str=''
+                Array1.forEach((element, index) => {// here we are looping array &placing values in the table, for that we took empty str
+                    str+=
+                    `
+                    <tr>
+                        <th scope="row">${index+1}</th>
+                        <td>${element[0]}</td>
+                        <td>${element[1]}</td>
+                        <td><button class="btn btn-sm btn-primary" onclick='Deleted(${index})'>Delete</button></td>
+                      </tr>
+                    `
+                    
+                });
+                tablebody.innerHTML=str// here we giveing tablebody innerhtml to that string
+            }
+            add=document.getElementById("Add");
+            // to add the details we r getting by element by id & then adding event listner to it
+            add.addEventListener("click",getAndUpdate)// first we gave getAnd update func after clicking
+            update()//funct to update 
+
+            function Deleted(itemindex){
+                console.log("delete",itemindex)
+                Array1str=localStorage.getItem('itemsJson');// we r taking localstorge into array
+                Array1=JSON.parse(Array1str);//parsing to json
+                Array1.splice(itemindex,1)//slicing we give index & number means how many to delete at that index
+                localStorage.setItem('itemsJson',JSON.stringify(Array1));//then converting to string
+                update();//updating
+            }
+
+            function cleared(){
+               if(confirm('do you want to clear all ists?')){//asking confirmation
+                console.log("clearing list..")
+                localStorage.clear();//clearing it
+                update();//updating
+            
+            }}
+        </script>
+</body>
+
+</html>
